@@ -60,11 +60,11 @@ class MainActivity : AppCompatActivity(), CustomItemClickListener {
 
     override fun onCustomItemClickListener(position: Int) {
         Toast.makeText(applicationContext,"Postion is ${position}",Toast.LENGTH_SHORT).show()
-        AlertDialog.Builder(this)
+       /* AlertDialog.Builder(this)
             .setTitle("Edit")
             .setMessage("Edit Title")
             .setView(edit_title)
-            .setPositiveButton(android.R.string.ok,DialogInterface.OnClickListener())
+            .setPositiveButton(android.R.string.ok,DialogInterface.OnClickListener())*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
