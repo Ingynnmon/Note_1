@@ -2,6 +2,9 @@ package com.app.note
 
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -14,9 +17,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_new_note.*
 
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(), CustomItemClickListener {
+
 
     private val newNoteActivityRequestCode=1
     private lateinit var noteViewModel: NoteViewModel
@@ -32,21 +37,11 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //toolbar=findViewById(R.id.toolbar)
-//        setSupportActionBar(toolbar)
-
-        /*//init
-        compositeDisposible= CompositeDisposable()
-        adapter= ArrayAdapter(this,R.layout.recyclerview_item,noteList)
-        registerForContextMenu(recyclerview)
-        recyclerview!!.adapter=adapter
-
-        //Database
-        val noteDatabase=NoteRoomDatabase.getDatabase(this)
-        noteRepository=NoteRepository.*/
+        toolbar=findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         val recyclerView=findViewById<RecyclerView>(R.id.recyclerview)
-        adapter=NoteListAdapter(applicationContext)
+        adapter=NoteListAdapter(this,this)
         recyclerView.adapter=adapter
         recyclerView.layoutManager=LinearLayoutManager(this)
 
@@ -58,9 +53,18 @@ class MainActivity : AppCompatActivity(){
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener { view ->
-            val intent=Intent(this@MainActivity,NewNoteActivity::class.java)
+            val intent=Intent(this,NewNoteActivity::class.java)
             startActivityForResult(intent,newNoteActivityRequestCode)
         }
+    }
+
+    override fun onCustomItemClickListener(position: Int) {
+        Toast.makeText(applicationContext,"Postion is ${position}",Toast.LENGTH_SHORT).show()
+        AlertDialog.Builder(this)
+            .setTitle("Edit")
+            .setMessage("Edit Title")
+            .setView(edit_title)
+            .setPositiveButton(android.R.string.ok,DialogInterface.OnClickListener())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
